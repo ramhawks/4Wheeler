@@ -18,11 +18,19 @@ public final class Constants {
   }
 
   public static class DriveTrainConstants {
+    public static final int THROTTLE_PORT = 0;
+    public static final int REARBRAKE_PORT = 1;
+
     public static final int STEERINGMOTOR_ID  = 10;
     public static final int BRAKEMOTOR_ID     = 11;  
 
+    public static final int STEERINGMOTORFORWARDLIMIT = 1;
+    public static final int STEERINGMOTORREVERSELIMIT = -1;
+
     public static final int STEERINGMOTOR_CURRENT_LIMIT = 5;
     public static final int BRAKEMOTOR_CURRENT_LIMIT = 5;
+
+    public static final int AIRBRAKERELAY_PORT = 0;
     
   }
 }
