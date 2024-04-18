@@ -22,10 +22,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private final DigitalOutput throttle;
   private final Relay rearBrakeRelay;
 
-  private final CANSparkMax brakeMotor;
+  private final CANSparkMax brakeMotor = new CANSparkMax(DriveTrainConstants.BRAKEMOTOR_ID, MotorType.kBrushed);
   private final RelativeEncoder brakeEncoder;
 
-  private final CANSparkMax steeringMotor;
+  private final CANSparkMax steeringMotor= new CANSparkMax(DriveTrainConstants.STEERINGMOTOR_ID, MotorType.kBrushed);
   private final SparkAbsoluteEncoder steeringEncoder;
 
   private final Compressor airCompressor;
@@ -37,24 +37,22 @@ public class DriveTrainSubsystem extends SubsystemBase {
   public DriveTrainSubsystem() {
 
     //Steering Motor Config
-    steeringMotor = new CANSparkMax(DriveTrainConstants.STEERINGMOTOR_ID, MotorType.kBrushed);
-    steeringMotor.restoreFactoryDefaults();
+    steeringMotor.restoreFactoryDefaults();    
     steeringMotor.setSmartCurrentLimit(DriveTrainConstants.STEERINGMOTOR_CURRENT_LIMIT);
-
     steeringEncoder = steeringMotor.getAbsoluteEncoder();
+    
+    //steeringEncoder = steeringMotor.getAbsoluteEncoder(steeringEncoder);
     steeringMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
     steeringMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
     steeringMotor.setSoftLimit(SoftLimitDirection.kForward, DriveTrainConstants.STEERINGMOTORFORWARDLIMIT);
     steeringMotor.setSoftLimit(SoftLimitDirection.kReverse, DriveTrainConstants.STEERINGMOTORREVERSELIMIT);
     
     //Brake Motor Config
-    brakeMotor = new CANSparkMax(DriveTrainConstants.BRAKEMOTOR_ID, MotorType.kBrushed);
+
     brakeMotor.restoreFactoryDefaults();
     brakeMotor.setSmartCurrentLimit(DriveTrainConstants.BRAKEMOTOR_CURRENT_LIMIT);
 
-    brakeEncoder = brakeMotor.getEncoder(); 
-
-
+    brakeEncoder = brakeMotor.getEncoder();
   
     throttle = new DigitalOutput(DriveTrainConstants.THROTTLE_PORT);
     rearBrakeRelay = new Relay(DriveTrainConstants.REARBRAKE_PORT);
@@ -68,7 +66,12 @@ public class DriveTrainSubsystem extends SubsystemBase {
     SmartDashboard.putBoolean("Brake Homed", brakeHomed);
   }
 
-  public void drive(double throttle, double frontBrake, boolean rearBrake, boolean springBrakeEnbable, boolean reverse){
+  public void drive(double throttle, double steer, double frontBrake, boolean rearBrake, boolean springBrakeEnbable, boolean reverse){
+    SmartDashboard.putNumber("throttle", throttle);
+    SmartDashboard.putNumber("steer", steer);
+    SmartDashboard.putNumber("front brake", frontBrake);
+
+    
     if(!brakeHomed || springBrakeEnbable) {
       airCompressor.disable();
       enableSpringBrake();

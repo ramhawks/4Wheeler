@@ -5,6 +5,7 @@
 package frc.robot;
 
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -26,6 +27,15 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    /*driveTrain.setDefaultCommand(new DriveCommand(driveTrain, m_driverController.getRightTriggerAxis(), 
+                                                              m_driverController.getLeftTriggerAxis(),
+                                                              m_driverController.getRightX(),
+                                                              m_driverController.b().getAsBoolean(),
+                                                              m_driverController.start().getAsBoolean(),
+                                                              m_driverController.leftBumper().getAsBoolean()));
+*/
+
     // Configure the trigger bindings
     configureBindings();
   }
